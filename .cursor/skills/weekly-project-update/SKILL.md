@@ -157,8 +157,13 @@ skill's job ends at opening them.
 1. Add a row to the "Repos covered" table above with the new repo, its portfolio section anchor,
    and its "About this" label id (check `projects/index.html` in
    `danibsheehan/danibsheehan.github.io` for both).
-2. Grant this skill's cloud routine read access to the new source repo (see the README's
-   **Autonomy boundary** section) — the routine's session sources need it added.
+2. Add the new repo to the **"Weekly portfolio update"** Claude Code cloud routine's session
+   sources — its prompt now reads this table directly, but the cloud session can only check out
+   repos explicitly attached to it. In [claude.ai/code/routines](https://claude.ai/code/routines)
+   (or via the `schedule` skill / `RemoteTrigger update`), add
+   `{"git_repository": {"url": "https://github.com/danibsheehan/<new-repo>"}}` to
+   `job_config.ccr.session_context.sources`. Skipping this step means the routine still says
+   nothing wrong in its prompt, but it still can't read the new repo.
 3. Add a pointer in the new repo's own README/AGENTS.md, mirroring the ones in `caught-looking`,
    `musing`, `baseball-collection`, and `gotta-catch-em-all` (see this repo's README for the
    pattern), so an agent working there isn't left wondering why there's no local automation doc.
