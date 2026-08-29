@@ -13,7 +13,7 @@ below).
 ## The skill
 
 [`.cursor/skills/weekly-project-update/SKILL.md`](.cursor/skills/weekly-project-update/SKILL.md)
-(`.claude/skills` is a directory symlink to the same file — Claude Code and Cursor both read it).
+(`.cursor/skills` is a directory symlink to the same file — Claude Code and Cursor both read it).
 It documents, in order: how to gather a repo's past week of changes, how to filter for
 people-relevant signal (skipping routine dependency bumps and doc-only churn), the voice the
 blurb should be written in (warm, punchy, human, dual-audience), when the portfolio page's "About
