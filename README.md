@@ -20,6 +20,16 @@ blurb should be written in (warm, punchy, human, dual-audience), when the portfo
 this" prose also needs a rewrite, and how to edit/PR the portfolio repo — one PR per source repo
 with real signal, never merged automatically.
 
+## The work-experience-update skill
+
+[`.claude/skills/work-experience-update/SKILL.md`](.claude/skills/work-experience-update/SKILL.md)
+takes a short note from Danielle — a new role, a promotion, a notable engineering accomplishment —
+and opens a PR against `danibsheehan.github.io`'s `index.html`, updating its
+`#professional-experience` section (distinct from `weekly-project-update`, which only touches
+`projects/index.html`). Scoped to engineering work experience from 2016 onward only. Invokable any
+time she has something to report, or in response to the monthly nudge routine's push notification
+(see "Autonomy boundary" below).
+
 ## Repos currently covered
 
 - [`danibsheehan/caught-looking`](https://github.com/danibsheehan/caught-looking)
@@ -46,6 +56,14 @@ from — those are read-only inputs.
 - **Why opening (not merging) is safe to automate**: opening a PR doesn't ship anything — a
   person still reviews the diff before the merge button matters. Merging is where risk lives, and
   that stays a manual, per-PR decision, always.
+- **What runs on its own (monthly nudge)**: a separate scheduled cloud routine ("Monthly
+  work-experience nudge") fires a push notification once a month asking if there's a work update
+  to add. It takes no repo action of its own — no cloning, no reading, no writing. Danielle
+  answers only when there's something to report, by invoking `work-experience-update` herself.
+- **`work-experience-update`'s PR scope**: opens PRs against `danibsheehan.github.io`, but only
+  ever touches `index.html`'s `#professional-experience` section — never `projects/index.html`,
+  never any other part of the site. Same guardrail: opens, never merges; a person reviews and
+  merges by hand.
 
 ## Why a separate repo
 
