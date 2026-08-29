@@ -11,7 +11,9 @@ This repo holds no application code of its own — it exists so these skills hav
 instead of a duplicated copy inside each project repo they cover (see "Why a separate repo"
 below).
 
-## The skill
+## Skills
+
+### weekly-project-update
 
 [`.claude/skills/weekly-project-update/SKILL.md`](.claude/skills/weekly-project-update/SKILL.md)
 (`.cursor/skills` is a directory symlink to the same file — Claude Code and Cursor both read it).
@@ -21,7 +23,16 @@ blurb should be written in (warm, punchy, human, dual-audience), when the portfo
 this" prose also needs a rewrite, and how to edit/PR the portfolio repo — one PR per source repo
 with real signal, never merged automatically.
 
-## The work-experience-update skill
+**Repos currently covered:**
+
+- [`danibsheehan/caught-looking`](https://github.com/danibsheehan/caught-looking)
+- [`danibsheehan/musing`](https://github.com/danibsheehan/musing)
+- [`danibsheehan/baseball-collection`](https://github.com/danibsheehan/baseball-collection)
+- [`danibsheehan/gotta-catch-em-all`](https://github.com/danibsheehan/gotta-catch-em-all)
+
+See the skill's "Adding a new repo to coverage" section for how to extend this list.
+
+### work-experience-update
 
 [`.claude/skills/work-experience-update/SKILL.md`](.claude/skills/work-experience-update/SKILL.md)
 takes a short note from Danielle — a new role, a promotion, a notable engineering accomplishment —
@@ -31,46 +42,27 @@ and opens a PR against `danibsheehan.github.io`'s `index.html`, updating its
 time she has something to report, or in response to the monthly nudge routine's push notification
 (see "Autonomy boundary" below).
 
-## Repos currently covered
-
-- [`danibsheehan/caught-looking`](https://github.com/danibsheehan/caught-looking)
-- [`danibsheehan/musing`](https://github.com/danibsheehan/musing)
-- [`danibsheehan/baseball-collection`](https://github.com/danibsheehan/baseball-collection)
-- [`danibsheehan/gotta-catch-em-all`](https://github.com/danibsheehan/gotta-catch-em-all)
-
-See the skill's "Adding a new repo to coverage" section for how to extend this list.
-
 ## Autonomy boundary
 
-**In plain English:** this routine may open a PR against `danibsheehan.github.io` on its own,
-once a week. It never merges anything, and it never writes to any of the source repos it reads
-from — those are read-only inputs.
+**In plain English:** these routines may open PRs against `danibsheehan.github.io` on their own.
+They never merge anything, and `weekly-project-update` never writes to any of the source repos it
+reads from — those are read-only inputs. Opening a PR doesn't ship anything — a person still
+reviews the diff before the merge button matters. Merging is where risk lives, and that stays a
+manual, per-PR decision, always.
 
-- **What runs on its own**: a scheduled Claude Code cloud routine ("Weekly portfolio update")
-  clones this repo plus the four source repos above every Monday, follows
-  [`weekly-project-update`](.claude/skills/weekly-project-update/SKILL.md) step by step, and
-  opens one PR per source repo with people-relevant signal that week against
-  `danibsheehan.github.io`, updating that repo's project section.
-- **Guardrail**: opens PRs, but never merges them. Only touches `danibsheehan.github.io`'s
-  `projects/index.html`, and only the section belonging to the source repo the update came from.
-  A person reviews and merges each PR by hand.
-- **Why opening (not merging) is safe to automate**: opening a PR doesn't ship anything — a
-  person still reviews the diff before the merge button matters. Merging is where risk lives, and
-  that stays a manual, per-PR decision, always.
-- **What runs on its own (monthly nudge)**: a separate scheduled cloud routine ("Monthly
-  work-experience nudge") fires a push notification once a month asking if there's a work update
-  to add. It takes no repo action of its own — no cloning, no reading, no writing. Danielle
-  answers only when there's something to report, by invoking `work-experience-update` herself.
-- **`work-experience-update`'s PR scope**: opens PRs against `danibsheehan.github.io`, but only
-  ever touches `index.html`'s `#professional-experience` section — never `projects/index.html`,
-  never any other part of the site. Same guardrail: opens, never merges; a person reviews and
-  merges by hand.
+| Skill | Trigger | Writes to | Guardrail |
+|---|---|---|---|
+| `weekly-project-update` | Scheduled cloud routine ("Weekly portfolio update") runs every Monday, cloning this repo plus the four source repos and following the skill step by step | `danibsheehan.github.io`'s `projects/index.html` — only the section belonging to the source repo the update came from | Opens one PR per source repo with signal that week; never merges — a person reviews and merges by hand |
+| `work-experience-update` | Danielle invokes it herself whenever she has something to report. A separate scheduled routine ("Monthly work-experience nudge") only sends a push notification reminder once a month — it takes no repo action of its own | `danibsheehan.github.io`'s `index.html`, `#professional-experience` section only — never `projects/index.html` | Opens a PR; never merges — a person reviews and merges by hand |
 
 ## Why a separate repo
 
-This skill is inherently cross-repo — it reads four different source repos and writes to a fifth.
-That's different from a typical per-repo skill (like `dependabot-triage`, which each project repo
-has its own independent copy of, since each instance only ever operates on the repo it lives in).
-A cross-repo orchestrator like this one either needs one canonical home, or N copies that must be
-kept in sync by hand every time the voice guidance or repo list changes. One home wins — this
-repo is that home, referenced (never duplicated) from each source repo's own README/AGENTS.md.
+`weekly-project-update` is inherently cross-repo — it reads four different source repos and writes
+to a fifth. That's different from a typical per-repo skill (like `dependabot-triage`, which each
+project repo has its own independent copy of, since each instance only ever operates on the repo it
+lives in). A cross-repo orchestrator like this one either needs one canonical home, or N copies that
+must be kept in sync by hand every time the voice guidance or repo list changes. `work-experience-update`
+doesn't read multiple source repos itself, but it shares this home too, so both skills that write to
+`danibsheehan.github.io` live in one canonical place instead of being split across repos. One home
+wins — this repo is that home, referenced (never duplicated) from each source repo's own
+README/AGENTS.md.
