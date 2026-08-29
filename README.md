@@ -1,13 +1,14 @@
 # portfolio-automation
 
-A single Claude Code skill that powers a scheduled cloud routine: once a week, it reads Danielle's
-portfolio-linked project repos, drafts a short people-friendly summary of what changed in each,
-and opens a PR (never merges it) against
-[`danibsheehan.github.io`](https://github.com/danibsheehan/danibsheehan.github.io) to keep that
-project's section on the portfolio site current.
+Claude Code skills that power scheduled cloud routines keeping
+[`danibsheehan.github.io`](https://github.com/danibsheehan/danibsheehan.github.io) current: one
+reads Danielle's portfolio-linked project repos every week and drafts a short people-friendly
+summary of what changed in each; the other takes a short note from her about a new role,
+promotion, or notable engineering accomplishment and drafts an update to her Experience section.
+Both open a PR (never merge it) against `danibsheehan.github.io` to make the change.
 
-This repo holds no application code of its own — it exists so the skill has exactly one home
-instead of a duplicated copy inside each project repo it covers (see "Why a separate repo"
+This repo holds no application code of its own — it exists so these skills have exactly one home
+instead of a duplicated copy inside each project repo they cover (see "Why a separate repo"
 below).
 
 ## The skill
