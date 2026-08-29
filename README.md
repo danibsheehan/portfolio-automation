@@ -12,7 +12,7 @@ below).
 
 ## The skill
 
-[`.cursor/skills/weekly-project-update/SKILL.md`](.cursor/skills/weekly-project-update/SKILL.md)
+[`.claude/skills/weekly-project-update/SKILL.md`](.claude/skills/weekly-project-update/SKILL.md)
 (`.cursor/skills` is a directory symlink to the same file — Claude Code and Cursor both read it).
 It documents, in order: how to gather a repo's past week of changes, how to filter for
 people-relevant signal (skipping routine dependency bumps and doc-only churn), the voice the
@@ -47,7 +47,7 @@ from — those are read-only inputs.
 
 - **What runs on its own**: a scheduled Claude Code cloud routine ("Weekly portfolio update")
   clones this repo plus the four source repos above every Monday, follows
-  [`weekly-project-update`](.cursor/skills/weekly-project-update/SKILL.md) step by step, and
+  [`weekly-project-update`](.claude/skills/weekly-project-update/SKILL.md) step by step, and
   opens one PR per source repo with people-relevant signal that week against
   `danibsheehan.github.io`, updating that repo's project section.
 - **Guardrail**: opens PRs, but never merges them. Only touches `danibsheehan.github.io`'s
