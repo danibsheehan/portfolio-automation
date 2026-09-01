@@ -117,6 +117,11 @@ separate branch per source repo, e.g. `weekly-update/<source-repo-slug>`) and ed
   class naming (the `trip-story__grid-label` / `trip-story__prose` pair already used for "About
   this" in the same article) rather than inventing new markup or CSS; check `assets/css/` for the
   closest existing block before adding any new rule.
+- Immediately after that block's `trip-story__grid-label` ("Recent updates") and before its
+  `trip-story__prose` blurb, add or replace a `<p class="trip-story__byline">Week of <Mon Day,
+  Year></p>` line (e.g. `Week of Aug 31, 2026`) using this run's date — this is the reader's only
+  cue for how recent "recent" is, so it must be replaced every run, never left stale from a prior
+  week. The `trip-story__byline` class already exists in `assets/css/app.css`; reuse it as-is.
 - If step 4 said yes for that repo, revise its `trip-story__prose` "About this" paragraphs in the
   same PR.
 
@@ -140,6 +145,8 @@ skill's job ends at opening them.
 - Editing anything in a source repo itself — this skill only reads those repos.
 - Merging a portfolio PR, or leaving one in a state that looks pre-approved.
 - Letting a "Recent updates" block accumulate more than the current week's entry.
+- Leaving the `trip-story__byline` date from a prior run in place — it must be replaced with this
+  run's date every time, even if the blurb text itself barely changes.
 - Rewriting "About this" for a routine week (dependency bumps, minor fixes) — save that rewrite
   for genuinely structural changes.
 - Inventing or embellishing changes that didn't happen.
