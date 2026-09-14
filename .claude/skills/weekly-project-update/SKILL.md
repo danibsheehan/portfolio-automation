@@ -66,10 +66,21 @@ week — then a quieter week is fine to say plainly. Prioritize:
   source repo's portfolio story is partly about *how* it's built, so agent-workflow changes are
   people-relevant even when no app code moved — don't fold them into "CI/automation tooling" and
   skip them as a chore.
+- **Automation/workflow changes that speak to system design** — not every CI tweak, only the
+  ones that reveal a real engineering decision: what the system now trusts to happen
+  unattended (widening or narrowing Dependabot's auto-merge scope, adding a new required gate
+  before code ships), or a deliberate shift in how risk or quality is managed (a new category
+  of check that changes what "safe to ship" means for this codebase). The test: would an
+  engineer reading the portfolio learn something about how this system is designed and
+  safeguarded — not just that a config file changed? If yes, report the *policy* (what's now
+  trusted to merge itself, what a new gate actually protects against), not the diff or version
+  number. If no — a version-pin fix, two workflow files re-synced after drifting apart, a
+  single lint rule flipped on with no larger story behind it — skip it; that's routine
+  maintenance, same tier as a dependency bump.
 
-If there's nothing worth reporting under any of the above (a quiet week — only dependency bumps
-and doc wording fixes, no new or changed skills/routines), stop here — do not open a PR for a
-week with no people-relevant signal.
+If there's nothing worth reporting under any of the above (a quiet week — only dependency bumps,
+doc wording fixes, and one-off CI/version-pin maintenance, no new or changed skills, routines, or
+quality gates), stop here — do not open a PR for a week with no people-relevant signal.
 
 ### 3. Draft the blurb
 
