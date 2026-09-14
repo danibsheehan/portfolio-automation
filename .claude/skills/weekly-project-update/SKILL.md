@@ -66,15 +66,17 @@ week — then a quieter week is fine to say plainly. Prioritize:
   source repo's portfolio story is partly about *how* it's built, so agent-workflow changes are
   people-relevant even when no app code moved — don't fold them into "CI/automation tooling" and
   skip them as a chore.
-- **Workflow and quality-gate changes** — new or expanded CI automation (e.g. widening what
-  Dependabot is trusted to auto-merge, closing a gap where a class of update wasn't
-  auto-merging when it safely could), or new/tightened lint, type-check, or coverage rules —
-  even when the change is config-only and no source file needed a fix. This is distinct from a
-  routine dependency-version bump: the story is the *policy* that changed (what's now trusted
-  to merge itself, what class of bug a new rule now catches), not the bump or version number
-  itself. A one-off CI fix that restores existing behavior (pinning a broken tool version,
-  syncing two workflow versions that drifted apart) doesn't qualify on its own — it's the
-  routine-maintenance kind of change this section otherwise skips.
+- **Automation/workflow changes that speak to system design** — not every CI tweak, only the
+  ones that reveal a real engineering decision: what the system now trusts to happen
+  unattended (widening or narrowing Dependabot's auto-merge scope, adding a new required gate
+  before code ships), or a deliberate shift in how risk or quality is managed (a new category
+  of check that changes what "safe to ship" means for this codebase). The test: would an
+  engineer reading the portfolio learn something about how this system is designed and
+  safeguarded — not just that a config file changed? If yes, report the *policy* (what's now
+  trusted to merge itself, what a new gate actually protects against), not the diff or version
+  number. If no — a version-pin fix, two workflow files re-synced after drifting apart, a
+  single lint rule flipped on with no larger story behind it — skip it; that's routine
+  maintenance, same tier as a dependency bump.
 
 If there's nothing worth reporting under any of the above (a quiet week — only dependency bumps,
 doc wording fixes, and one-off CI/version-pin maintenance, no new or changed skills, routines, or
