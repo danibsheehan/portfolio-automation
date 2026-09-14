@@ -6,9 +6,13 @@ description: >-
   dual-audience voice and opens (never merges) one PR per repo with real signal
   against danibsheehan/danibsheehan.github.io, updating that repo's project section —
   a "Recent updates" blurb, the "About this" prose when the week included something
-  structurally notable, and a correction to the "Automation and AI" bullets when this
-  week's change makes one of them factually stale. Use for the weekly portfolio-update
-  routine, or when asked to summarize recent changes in any of these repos for the
+  structurally notable, a correction to the "Automation and AI" bullets when this
+  week's change makes one of them factually stale, and (past a staleness threshold) a
+  refresh of a "Recent updates" block left stale by several quiet weeks in a row. Also
+  covers a separate monthly accuracy-audit pass that checks "About this" and
+  "Automation and AI" against each repo's current ground truth, independent of any
+  week's diff. Use for the weekly portfolio-update routine, the monthly accuracy
+  audit, or when asked to summarize recent changes in any of these repos for the
   portfolio site.
 ---
 
@@ -82,7 +86,18 @@ week — then a quieter week is fine to say plainly. Prioritize:
 
 If there's nothing worth reporting under any of the above (a quiet week — only dependency bumps,
 doc wording fixes, and one-off CI/version-pin maintenance, no new or changed skills, routines, or
-quality gates), stop here — do not open a PR for a week with no people-relevant signal.
+quality gates), check that repo's current "Recent updates" byline on the live portfolio page
+before stopping:
+
+- **Byline within the last ~3 weeks**: stop here as usual — do not open a PR for a single quiet
+  week with no people-relevant signal.
+- **Byline older than ~3 weeks** (several quiet weeks in a row have left the block genuinely
+  stale): don't stop — open a PR anyway. Replace the blurb with a brief, honest line that nothing
+  major happened (e.g. "Quiet stretch here — steady maintenance in the background, nothing
+  structural to report this time.") and refresh the byline to this run's date. This is the one
+  case where a week with no real signal still gets a PR; it exists solely to keep the byline
+  honest about how recent "recent" is, not to manufacture a story — don't dress a no-news week up
+  as more than it is.
 
 ### 3. Draft the blurb
 
@@ -187,9 +202,52 @@ skill's job ends at opening them.
   demonstrating it exists.
 - Writing like a changelog bot: listicle openers, empty superlatives, hedging qualifiers, generic
   AI-shaped sentences that could describe any project's commit history.
-- Opening a PR for a repo whose week had nothing people-relevant to report.
+- Opening a PR for a repo whose week had nothing people-relevant to report — *unless* the
+  staleness threshold in step 2 has been crossed, in which case not opening one is the mistake.
 - Blending signal from two source repos into one PR, or one repo's blurb leaking details from
   another repo's week.
+- Dressing up a staleness-refresh PR (step 2's ~3-week fallback) as if real news happened, or
+  running the staleness check on every single quiet week instead of only once the threshold is
+  crossed.
+
+## Monthly accuracy audit ("About this" / "Automation and AI")
+
+The weekly routine above (steps 4 and 5) can only ever catch drift that shows up in that week's
+diff — a change that directly contradicts something already written. It structurally cannot
+catch slow, cumulative drift (several small changes spread across many weeks, each individually
+beneath the "structurally notable" or "directly contradicts a bullet" bar, that together make a
+section wrong) or drift that predates a given check's existence. This pass exists to catch what
+the weekly diff-based checks can't — it runs on a separate monthly cadence, independent of any
+given week's signal.
+
+For each source repo in the "Repos covered" table, independently:
+
+1. Read that repo's current "About this" and "Automation and AI" sections on the live portfolio
+   page (`projects/index.html` in `danibsheehan/danibsheehan.github.io`).
+2. Read the actual current state of the source repo — not a diff, the live ground truth: its
+   README/AGENTS.md description of what it does and how it's built, its CI/workflow config
+   (Dependabot auto-merge scope, required checks, scheduled workflows), and any Claude Code /
+   Cursor skills describing autonomous behavior.
+3. Compare claim by claim: does every sentence in "About this" and every bullet in "Automation
+   and AI" still hold? Flag anything wrong, outdated, or describing automation that no longer
+   exists (or exists but now works differently).
+4. Nothing drifted for that repo → do nothing, no PR. Don't manufacture an audit finding just to
+   have something to show for the pass.
+5. Something drifted → open one PR for that repo (same one-repo-one-PR, branch-per-repo
+   discipline as the weekly routine — never merge it) correcting only the specific stale
+   claim(s)/bullet(s). Same rule as the weekly drift check: fix what's wrong, don't rewrite the
+   whole section unless multiple things are simultaneously wrong.
+
+This pass never touches "Recent updates" — that section, staleness fallback included, is the
+weekly routine's responsibility (step 2 above).
+
+**Setting up the monthly cadence**: this skill doesn't control how often it's invoked — a
+separate scheduled Claude Code cloud routine does that, the same way the "Weekly portfolio
+update" routine invokes the weekly steps above. A second routine (e.g. "Monthly portfolio
+accuracy audit") needs to be created in
+[claude.ai/code/routines](https://claude.ai/code/routines) (or via the `schedule` skill /
+`RemoteTrigger`), on a monthly cadence, with a prompt pointing at this section specifically and
+the same session sources (this repo plus all four source repos) as the weekly routine.
 
 ## Adding a new repo to coverage
 
