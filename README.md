@@ -3,9 +3,11 @@
 Claude Code skills that power scheduled cloud routines keeping
 [`danibsheehan.github.io`](https://github.com/danibsheehan/danibsheehan.github.io) current: one
 reads Danielle's portfolio-linked project repos every week and drafts a short people-friendly
-summary of what changed in each; the other takes a short note from her about a new role,
-promotion, or notable engineering accomplishment and drafts an update to her Experience section.
-Both open a PR (never merge it) against `danibsheehan.github.io` to make the change.
+summary of what changed in each; a second, monthly routine re-reads those same repos' actual
+current state and corrects any "About this" / "Automation and AI" copy that's quietly gone stale
+since it was written; the third takes a short note from her about a new role, promotion, or
+notable engineering accomplishment and drafts an update to her Experience section. All three open
+a PR (never merge it) against `danibsheehan.github.io` to make the change.
 
 This repo holds no application code of its own — it exists so these skills have exactly one home
 instead of a duplicated copy inside each project repo they cover (see "Why a separate repo"
@@ -20,10 +22,20 @@ below).
 It documents, in order: how to gather a repo's past week of changes, how to filter for
 people-relevant signal (skipping routine dependency bumps and doc-only churn), the voice the
 blurb should be written in (warm, punchy, human, dual-audience), when the portfolio page's "About
-this" prose also needs a rewrite, and how to edit/PR the portfolio repo — one PR per source repo
-with real signal, never merged automatically.
+this" prose also needs a rewrite, how to edit/PR the portfolio repo — one PR per source repo with
+real signal, never merged automatically — and a staleness fallback that refreshes the "Recent
+updates" byline (without inventing news) once a repo's block has gone several weeks without a real
+update.
 
-**Repos currently covered:**
+The same file also documents a second, independent routine on its own monthly cadence — a
+**monthly accuracy audit** (see the skill's "Monthly accuracy audit" section). Where the weekly
+steps above can only catch drift that shows up in that week's diff, this pass re-reads each
+repo's actual current state (README/AGENTS.md, CI/workflow config, autonomy-related skills) and
+corrects any "About this" / "Automation and AI" claim that's quietly gone stale — including slow,
+cumulative drift no single week's diff would have caught. Same one-repo-one-PR, never-merge
+discipline as the weekly routine; a quiet audit (nothing drifted) opens no PR.
+
+**Repos currently covered** (same table drives both the weekly summary and the monthly audit):
 
 - [`danibsheehan/caught-looking`](https://github.com/danibsheehan/caught-looking)
 - [`danibsheehan/musing`](https://github.com/danibsheehan/musing)
@@ -53,6 +65,7 @@ manual, per-PR decision, always.
 | Skill | Trigger | Writes to | Guardrail |
 |---|---|---|---|
 | `weekly-project-update` | Scheduled cloud routine ("Weekly portfolio update") runs every Monday, cloning this repo plus the four source repos and following the skill step by step | `danibsheehan.github.io`'s `projects/index.html` — only the section belonging to the source repo the update came from | Opens one PR per source repo with signal that week; never merges — a person reviews and merges by hand |
+| `weekly-project-update` (monthly accuracy audit) | A separate scheduled cloud routine ("Monthly portfolio accuracy audit") runs monthly, cloning this repo plus the four source repos and following the same skill's "Monthly accuracy audit" section | `danibsheehan.github.io`'s `projects/index.html` — only the "About this" / "Automation and AI" copy for a repo where a claim has drifted from that repo's actual current state | Opens a correction PR only where something has actually drifted; a quiet audit opens nothing; never merges — a person reviews and merges by hand |
 | `work-experience-update` | Danielle invokes it herself whenever she has something to report. A separate scheduled routine ("Monthly work-experience nudge") only sends a push notification reminder once a month — it takes no repo action of its own | `danibsheehan.github.io`'s `index.html`, `#professional-experience` section only — never `projects/index.html` | Opens a PR; never merges — a person reviews and merges by hand |
 
 ## Why a separate repo
