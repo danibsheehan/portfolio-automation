@@ -5,9 +5,11 @@ description: >-
   (caught-looking, musing, baseball-collection, gotta-catch-em-all) in a warm, punchy,
   dual-audience voice and opens (never merges) one PR per repo with real signal
   against danibsheehan/danibsheehan.github.io, updating that repo's project section —
-  a "Recent updates" blurb, and the "About this" prose when the week included
-  something structurally notable. Use for the weekly portfolio-update routine, or
-  when asked to summarize recent changes in any of these repos for the portfolio site.
+  a "Recent updates" blurb, the "About this" prose when the week included something
+  structurally notable, and a correction to the "Automation and AI" bullets when this
+  week's change makes one of them factually stale. Use for the weekly portfolio-update
+  routine, or when asked to summarize recent changes in any of these repos for the
+  portfolio site.
 ---
 
 # Weekly project update (portfolio-linked repos → portfolio)
@@ -27,12 +29,12 @@ repo to its coverage.
 
 ## Repos covered
 
-| Source repo | Portfolio section anchor | "About this" label id |
-| --- | --- | --- |
-| `danibsheehan/caught-looking` | `#project-caught-looking` | `caught-looking-build-label` |
-| `danibsheehan/musing` | `#project-musing` | `musing-build-label` |
-| `danibsheehan/baseball-collection` | `#project-baseball` | `baseball-build-label` |
-| `danibsheehan/gotta-catch-em-all` | `#project-pokemon-battle-royale` | `pokemon-build-label` |
+| Source repo | Portfolio section anchor | "About this" label id | "Automation and AI" label id |
+| --- | --- | --- | --- |
+| `danibsheehan/caught-looking` | `#project-caught-looking` | `caught-looking-build-label` | `caught-looking-automation-label` |
+| `danibsheehan/musing` | `#project-musing` | `musing-build-label` | `musing-automation-label` |
+| `danibsheehan/baseball-collection` | `#project-baseball` | `baseball-build-label` | `baseball-automation-label` |
+| `danibsheehan/gotta-catch-em-all` | `#project-pokemon-battle-royale` | `pokemon-build-label` | `pokemon-automation-label` |
 
 Run every step below **once per source repo**, independently — one repo's quiet week (skip) or
 loud week (About-this rewrite) never affects another's.
@@ -112,7 +114,19 @@ something structurally notable — a new major feature, a real architecture chan
 source, a new page). Routine fixes, perf tuning, and dependency work never trigger this; leave
 those paragraphs alone in an ordinary week.
 
-### 5. Edit the portfolio repo — one branch and PR per repo with signal
+### 5. Check the "Automation and AI" section for drift
+
+That section is an inventory of the repo's actual standing automation (what auto-merges, what a
+scheduled agent or check does) — it is not a running log, so it does not get a weekly rewrite.
+But when this week's signal (step 2) changes something that section already describes — an
+auto-merge scope widened or narrowed, a scheduled routine's behavior changed — check whether the
+existing bullets are still true. Fix only the specific bullet(s) that are now stale, in the same
+PR as the "Recent updates" edit; don't rewrite the section wholesale, and don't add a bullet for
+something that isn't a standing, ongoing piece of automation (a one-off fix doesn't earn a bullet
+just because it's this week's "Recent updates" story). A quiet week, or a week whose signal
+doesn't touch anything this section already claims, leaves it untouched.
+
+### 6. Edit the portfolio repo — one branch and PR per repo with signal
 
 ```bash
 gh repo clone danibsheehan/danibsheehan.github.io /tmp/danibsheehan-site -- --depth 1
@@ -135,12 +149,15 @@ separate branch per source repo, e.g. `weekly-update/<source-repo-slug>`) and ed
   week. The `trip-story__byline` class already exists in `assets/css/app.css`; reuse it as-is.
 - If step 4 said yes for that repo, revise its `trip-story__prose` "About this" paragraphs in the
   same PR.
+- If step 5 found drift, fix the specific stale bullet(s) under that repo's "Automation and AI"
+  `trip-story__list` (see the table above for its label id) — correct just what's now wrong,
+  don't restructure or add to the list otherwise.
 
 Each PR touches only its own repo's article — sections for different repos live in
 non-overlapping parts of the same file, so independent PRs from independent branches merge
 cleanly regardless of order.
 
-### 6. Open the PR — never merge it
+### 7. Open the PR — never merge it
 
 ```bash
 gh pr create --repo danibsheehan/danibsheehan.github.io --title "..." --body "..."
@@ -160,6 +177,10 @@ skill's job ends at opening them.
   run's date every time, even if the blurb text itself barely changes.
 - Rewriting "About this" for a routine week (dependency bumps, minor fixes) — save that rewrite
   for genuinely structural changes.
+- Leaving an "Automation and AI" bullet in place after this week's change made it factually
+  wrong (e.g. describing an auto-merge scope that no longer matches reality) — or, the opposite
+  mistake, rewriting that section wholesale or adding a bullet for a one-off change that isn't a
+  standing piece of automation.
 - Inventing or embellishing changes that didn't happen.
 - Naming a mechanism (a cache, a rate limit, a race condition) without translating *why it
   mattered* in the same breath — technical detail earns its place by serving the story, not by
