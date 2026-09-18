@@ -70,6 +70,15 @@ against its actual source of truth (that repo's README/file counts, or — for i
 repo's current skill files) and opens a correction PR only where a specific claim has actually
 gone stale, one PR per panel with drift; a quiet month opens nothing.
 
+### automation-pulse-refresh
+
+[`.claude/skills/automation-pulse-refresh/SKILL.md`](.claude/skills/automation-pulse-refresh/SKILL.md)
+runs weekly and refreshes `danibsheehan.github.io`'s `assets/data/automation-pulse.json` — the
+data file behind the Systems page's "recent activity" snapshot — with each routine's most recent
+PRs against that site. Unlike every other skill here, it doesn't draft or correct portfolio prose
+at all; it only reads `danibsheehan.github.io`'s own PR history (by branch-name convention) and
+rebuilds structured PR metadata, no project-repo checkouts needed. Single PR per run.
+
 ## Autonomy boundary
 
 **In plain English:** these routines may open PRs against `danibsheehan.github.io` on their own.
@@ -84,6 +93,7 @@ manual, per-PR decision, always.
 | `weekly-project-update` (monthly accuracy audit) | A separate scheduled cloud routine ("Monthly portfolio accuracy audit") runs monthly, cloning this repo plus the four source repos and following the same skill's "Monthly accuracy audit" section | `danibsheehan.github.io`'s `projects/index.html` — only the Pitch / Stack / "Automation and AI" copy for a repo where a claim has drifted from that repo's actual current state | Opens a correction PR only where something has actually drifted; a quiet audit opens nothing; never merges — a person reviews and merges by hand |
 | `work-experience-update` | Danielle invokes it herself whenever she has something to report. A separate scheduled routine ("Monthly work-experience nudge") only sends a push notification reminder once a month — it takes no repo action of its own | `danibsheehan.github.io`'s `about/index.html`, `#changelog` section only — never `projects/index.html` | Opens a PR; never merges — a person reviews and merges by hand |
 | `systems-page-audit` | A separate scheduled cloud routine ("Monthly systems-page audit") runs monthly, cloning this repo plus `dani-foundations` and `dani-actions` (all read-only) and following the skill step by step | `danibsheehan.github.io`'s `systems/index.html` — only the panel(s) where a claim has drifted from that panel's actual source of truth | Opens a correction PR only where something has actually drifted, one per panel; a quiet audit opens nothing; never merges — a person reviews and merges by hand |
+| `automation-pulse-refresh` | A separate scheduled cloud routine ("Weekly automation-pulse refresh") runs weekly, cloning this repo plus `danibsheehan.github.io` (no project-repo checkouts needed) and following the skill step by step | `danibsheehan.github.io`'s `assets/data/automation-pulse.json` only — never any page's prose | Opens one PR per run with refreshed PR metadata; never merges — a person reviews and merges by hand |
 
 ## Why a separate repo
 
