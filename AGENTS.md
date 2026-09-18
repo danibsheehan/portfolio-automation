@@ -20,6 +20,24 @@ the single source of truth.
 `.claude/skills/*/SKILL.md` are the canonical playbooks. `.cursor/skills` is a directory symlink
 to `.claude/skills` — same files, no copies.
 
+### Working on this repo
+
+When making changes to this repo's own files (SKILL.md playbooks, README, AGENTS.md/CLAUDE.md),
+use these `dani-foundations` skills:
+
+- `branch-naming` — for branch names (`<type>/<slug>`, Conventional-Commits-style prefixes).
+- `pr-chunk-plan` — before implementation, when a task touches 3+ files or bundles multiple
+  distinct concerns.
+- `pr-stack-ship` — to execute a `pr-chunk-plan` breakdown as a stack of small branches/PRs,
+  retargeting later PRs as earlier ones in the stack merge.
+- `pr-ready` — before opening a PR, to run this repo's local checks and prepare the PR.
+- `pr-summary-draft` — to draft the PR description from the actual diff/commits on the branch.
+
+These govern work on this repo's own files only. They do not apply to the PRs
+`weekly-project-update` and `work-experience-update` open against `danibsheehan.github.io` —
+those skills fully specify their own branch/PR mechanics (see each skill's own file and the
+README's [autonomy boundary](README.md#autonomy-boundary)).
+
 ## Repos covered
 
 See the `weekly-project-update` skill's own "Repos covered" table and "Adding a new repo to
