@@ -5,15 +5,15 @@ description: >-
   (caught-looking, musing, baseball-collection, gotta-catch-em-all) in a warm, punchy,
   dual-audience voice and opens (never merges) one PR per repo with real signal
   against danibsheehan/danibsheehan.github.io, updating that repo's project section —
-  a "Recent updates" blurb, the "About this" prose when the week included something
-  structurally notable, a correction to the "Automation and AI" bullets when this
-  week's change makes one of them factually stale, and (past a staleness threshold) a
-  refresh of a "Recent updates" block left stale by several quiet weeks in a row. Also
-  covers a separate monthly accuracy-audit pass that checks "About this" and
-  "Automation and AI" against each repo's current ground truth, independent of any
-  week's diff. Use for the weekly portfolio-update routine, the monthly accuracy
-  audit, or when asked to summarize recent changes in any of these repos for the
-  portfolio site.
+  a "Recent updates" blurb, the Pitch or Stack card text when the week included
+  something structurally notable or tech-stack-changing, a correction to the
+  "Automation and AI" bullets when this week's change makes one of them factually
+  stale, and (past a staleness threshold) a refresh of a "Recent updates" block left
+  stale by several quiet weeks in a row. Also covers a separate monthly accuracy-audit
+  pass that checks the Pitch, Stack, and "Automation and AI" text against each repo's
+  current ground truth, independent of any week's diff. Use for the weekly
+  portfolio-update routine, the monthly accuracy audit, or when asked to summarize
+  recent changes in any of these repos for the portfolio site.
 ---
 
 # Weekly project update (portfolio-linked repos → portfolio)
@@ -33,12 +33,12 @@ repo to its coverage.
 
 ## Repos covered
 
-| Source repo | Portfolio section anchor | "About this" label id | "Automation and AI" label id |
-| --- | --- | --- | --- |
-| `danibsheehan/caught-looking` | `#project-caught-looking` | `caught-looking-build-label` | `caught-looking-automation-label` |
-| `danibsheehan/musing` | `#project-musing` | `musing-build-label` | `musing-automation-label` |
-| `danibsheehan/baseball-collection` | `#project-baseball` | `baseball-build-label` | `baseball-automation-label` |
-| `danibsheehan/gotta-catch-em-all` | `#project-pokemon-battle-royale` | `pokemon-build-label` | `pokemon-automation-label` |
+| Source repo | Portfolio section anchor | Specimen modifier class | "Recent updates" label id | "Automation and AI" label id |
+| --- | --- | --- | --- | --- |
+| `danibsheehan/caught-looking` | `#project-caught-looking` | `specimen--caught-looking` | `caught-looking-updates-label` | `caught-looking-automation-label` |
+| `danibsheehan/musing` | `#project-musing` | `specimen--musing` | `musing-updates-label` | `musing-automation-label` |
+| `danibsheehan/baseball-collection` | `#project-cartophiles` (displayed on the site as "Cartophiles" — the source repo itself is still named `baseball-collection`) | `specimen--cartophiles` | `cartophiles-updates-label` | `cartophiles-automation-label` |
+| `danibsheehan/gotta-catch-em-all` | `#project-gotta-catch-em-all` | `specimen--gotta-catch-em-all` | `gotta-catch-em-all-updates-label` | `gotta-catch-em-all-automation-label` |
 
 Run every step below **once per source repo**, independently — one repo's quiet week (skip) or
 loud week (About-this rewrite) never affects another's.
@@ -122,24 +122,40 @@ before stopping:
   could get served stale data" beats both "fixed a caching bug" (too vague for an engineer) and
   "fixed a singleflight race in the TTL cache" (opaque to everyone else).
 
-### 4. Decide if "About this" needs a rewrite
+### 4. Decide if the Pitch or Stack card needs a rewrite
 
-Only touch the existing `trip-story__prose` "About this" paragraphs when the week included
-something structurally notable — a new major feature, a real architecture change (e.g. a new data
-source, a new page). Routine fixes, perf tuning, and dependency work never trigger this; leave
-those paragraphs alone in an ordinary week.
+Two separate, narrower triggers replaced the old single "About this" rewrite:
+
+- **4a. Pitch** (`.specimen__pitch`, inside that project's `.specimen__header` — no id; select it
+  via the project's `specimen--<slug>` modifier class in the table above). Only rewrite this when
+  the week included something structurally notable — a new major feature, a real architecture
+  change (e.g. a new data source, a new page). Routine fixes, perf tuning, and dependency work
+  never trigger this; leave it alone in an ordinary week.
+- **4b. Stack card** (`.specimen__card--stack .specimen__card-text`, inside `.specimen__cards`).
+  Only rewrite this when the week's signal is an actual tech-stack change (a new framework,
+  language, or major dependency swap) — not a routine version bump. If a stack change breaks a
+  cross-project callout in that same card's `.specimen__thread` paragraph (e.g. "Same React 19
+  frontend stack as Musing"), fix that one line too; otherwise leave `.specimen__thread` alone.
 
 ### 5. Check the "Automation and AI" section for drift
 
-That section is an inventory of the repo's actual standing automation (what auto-merges, what a
-scheduled agent or check does) — it is not a running log, so it does not get a weekly rewrite.
-But when this week's signal (step 2) changes something that section already describes — an
-auto-merge scope widened or narrowed, a scheduled routine's behavior changed — check whether the
-existing bullets are still true. Fix only the specific bullet(s) that are now stale, in the same
-PR as the "Recent updates" edit; don't rewrite the section wholesale, and don't add a bullet for
-something that isn't a standing, ongoing piece of automation (a one-off fix doesn't earn a bullet
-just because it's this week's "Recent updates" story). A quiet week, or a week whose signal
-doesn't touch anything this section already claims, leaves it untouched.
+That section (`.specimen__card--automation`, its bullets in
+`ul.specimen__list[data-disclosure-list]`) is an inventory of the repo's actual standing
+automation (what auto-merges, what a scheduled agent or check does) — it is not a running log, so
+it does not get a weekly rewrite. But when this week's signal (step 2) changes something that
+section already describes — an auto-merge scope widened or narrowed, a scheduled routine's
+behavior changed — check whether the existing bullets are still true. Fix only the specific
+bullet(s) that are now stale, in the same PR as the "Recent updates" edit; don't rewrite the
+section wholesale, and don't add a bullet for something that isn't a standing, ongoing piece of
+automation (a one-off fix doesn't earn a bullet just because it's this week's "Recent updates"
+story). A quiet week, or a week whose signal doesn't touch anything this section already claims,
+leaves it untouched.
+
+Some bullets are visually collapsed behind a "Show N more" disclosure toggle (marked
+`hidden data-disclosure-item="hidden"`) rather than shown by default — a stale bullet may be
+either kind. Edit its text in place regardless of which; don't touch the `hidden` attribute or the
+toggle button's "Show N more" count unless you're actually adding or removing a bullet (which
+these rules already restrict to genuine drift correction, not routine weeks).
 
 ### 6. Edit the portfolio repo — one branch and PR per repo with signal
 
@@ -151,22 +167,25 @@ For each source repo that had people-relevant signal (step 2), branch off `maste
 separate branch per source repo, e.g. `weekly-update/<source-repo-slug>`) and edit
 `projects/index.html`:
 
-- Add or replace a "Recent updates" block inside that repo's project article (see the table
-  above for its anchor). It holds **only the current week's blurb** — replace it in place each
-  run, never append to a growing list. Reuse that article's existing `trip-story__*` BEM-style
-  class naming (the `trip-story__grid-label` / `trip-story__prose` pair already used for "About
-  this" in the same article) rather than inventing new markup or CSS; check `assets/css/` for the
-  closest existing block before adding any new rule.
-- Immediately after that block's `trip-story__grid-label` ("Recent updates") and before its
-  `trip-story__prose` blurb, add or replace a `<p class="trip-story__byline">Week of <Mon Day,
-  Year></p>` line (e.g. `Week of Aug 31, 2026`) using this run's date — this is the reader's only
-  cue for how recent "recent" is, so it must be replaced every run, never left stale from a prior
-  week. The `trip-story__byline` class already exists in `assets/css/app.css`; reuse it as-is.
-- If step 4 said yes for that repo, revise its `trip-story__prose` "About this" paragraphs in the
-  same PR.
-- If step 5 found drift, fix the specific stale bullet(s) under that repo's "Automation and AI"
-  `trip-story__list` (see the table above for its label id) — correct just what's now wrong,
-  don't restructure or add to the list otherwise.
+- Add or replace the "Recent updates" block inside that repo's `.specimen__card--updates` card
+  (see the table above for the project's anchor and label id). It holds **only the current week's
+  blurb** — replace it in place each run, never append to a growing list. Reuse that project's
+  existing `.specimen__cards` markup exactly (copy the block from an existing project article
+  rather than inventing new markup or CSS — see the authoring comment near the top of
+  `projects/index.html` for the canonical shape).
+- Immediately after that card's `<p class="specimen__card-label" id="<slug>-updates-label">Recent
+  updates</p>` and before its `<p class="specimen__card-text" ...>` blurb, add or replace a
+  `<p class="specimen__byline">Week of <Mon Day, Year></p>` line (e.g. `Week of Aug 31, 2026`)
+  using this run's date — this is the reader's only cue for how recent "recent" is, so it must be
+  replaced every run, never left stale from a prior week. The `specimen__byline` class already
+  exists in `assets/css/app.css`; reuse it as-is.
+- If step 4a said yes for that repo, revise its `.specimen__pitch` paragraph in the same PR.
+- If step 4b said yes for that repo, revise its `.specimen__card--stack .specimen__card-text`
+  paragraph (and its `.specimen__thread` line, if that also went stale) in the same PR.
+- If step 5 found drift, fix the specific stale bullet(s) inside that repo's `.specimen__card--
+  automation` card's `ul.specimen__list` (see the table above for its label id) — correct just
+  what's now wrong, don't restructure or add to the list otherwise, and see step 5's note on the
+  disclosure-toggle bullets before editing one that's hidden by default.
 
 Each PR touches only its own repo's article — sections for different repos live in
 non-overlapping parts of the same file, so independent PRs from independent branches merge
@@ -188,14 +207,16 @@ skill's job ends at opening them.
 - Editing anything in a source repo itself — this skill only reads those repos.
 - Merging a portfolio PR, or leaving one in a state that looks pre-approved.
 - Letting a "Recent updates" block accumulate more than the current week's entry.
-- Leaving the `trip-story__byline` date from a prior run in place — it must be replaced with this
+- Leaving the `specimen__byline` date from a prior run in place — it must be replaced with this
   run's date every time, even if the blurb text itself barely changes.
-- Rewriting "About this" for a routine week (dependency bumps, minor fixes) — save that rewrite
-  for genuinely structural changes.
+- Rewriting the Pitch (step 4a) or Stack card (step 4b) for a routine week (dependency bumps,
+  minor fixes) — save those rewrites for genuinely structural or tech-stack changes, respectively.
 - Leaving an "Automation and AI" bullet in place after this week's change made it factually
   wrong (e.g. describing an auto-merge scope that no longer matches reality) — or, the opposite
   mistake, rewriting that section wholesale or adding a bullet for a one-off change that isn't a
   standing piece of automation.
+- Changing a bullet's `hidden` attribute or letting the "Show N more" disclosure-toggle count
+  drift out of sync with the actual number of hidden bullets while editing "Automation and AI".
 - Inventing or embellishing changes that didn't happen.
 - Naming a mechanism (a cache, a rate limit, a race condition) without translating *why it
   mattered* in the same breath — technical detail earns its place by serving the story, not by
@@ -210,7 +231,7 @@ skill's job ends at opening them.
   running the staleness check on every single quiet week instead of only once the threshold is
   crossed.
 
-## Monthly accuracy audit ("About this" / "Automation and AI")
+## Monthly accuracy audit (Pitch / Stack / Automation and AI)
 
 The weekly routine above (steps 4 and 5) can only ever catch drift that shows up in that week's
 diff — a change that directly contradicts something already written. It structurally cannot
@@ -222,15 +243,17 @@ given week's signal.
 
 For each source repo in the "Repos covered" table, independently:
 
-1. Read that repo's current "About this" and "Automation and AI" sections on the live portfolio
-   page (`projects/index.html` in `danibsheehan/danibsheehan.github.io`).
+1. Read that repo's current `.specimen__pitch`, `.specimen__card--stack .specimen__card-text`,
+   and `.specimen__card--automation` sections on the live portfolio page (`projects/index.html`
+   in `danibsheehan/danibsheehan.github.io`).
 2. Read the actual current state of the source repo — not a diff, the live ground truth: its
    README/AGENTS.md description of what it does and how it's built, its CI/workflow config
    (Dependabot auto-merge scope, required checks, scheduled workflows), and any Claude Code /
    Cursor skills describing autonomous behavior.
-3. Compare claim by claim: does every sentence in "About this" and every bullet in "Automation
-   and AI" still hold? Flag anything wrong, outdated, or describing automation that no longer
-   exists (or exists but now works differently).
+3. Compare claim by claim: does every sentence in the Pitch and Stack text, and every bullet in
+   "Automation and AI" (including the ones collapsed behind the disclosure toggle), still hold?
+   Flag anything wrong, outdated, or describing automation that no longer exists (or exists but
+   now works differently).
 4. Nothing drifted for that repo → do nothing, no PR. Don't manufacture an audit finding just to
    have something to show for the pass.
 5. Something drifted → open one PR for that repo (same one-repo-one-PR, branch-per-repo
@@ -252,8 +275,8 @@ the same session sources (this repo plus all four source repos) as the weekly ro
 ## Adding a new repo to coverage
 
 1. Add a row to the "Repos covered" table above with the new repo, its portfolio section anchor,
-   and its "About this" label id (check `projects/index.html` in
-   `danibsheehan/danibsheehan.github.io` for both).
+   its `specimen--<slug>` modifier class, and its "Recent updates" / "Automation and AI" label
+   ids (check `projects/index.html` in `danibsheehan/danibsheehan.github.io` for all of these).
 2. Add the new repo to the **"Weekly portfolio update"** Claude Code cloud routine's session
    sources — its prompt now reads this table directly, but the cloud session can only check out
    repos explicitly attached to it. In [claude.ai/code/routines](https://claude.ai/code/routines)
@@ -267,7 +290,9 @@ the same session sources (this repo plus all four source repos) as the weekly ro
 
 ## Reference
 
-- Target sections: `projects/index.html` in `danibsheehan/danibsheehan.github.io` — see the
-  "Repos covered" table above for each source repo's anchor and label id.
+- Target sections: `projects/index.html` in `danibsheehan/danibsheehan.github.io` — each project
+  article's `.specimen__pitch`, `.specimen__card--stack`, `.specimen__card--updates`, and
+  `.specimen__card--automation`. See the "Repos covered" table above for each source repo's
+  anchor, modifier class, and label ids.
 - Autonomy boundary: this repo's [`README.md`](../../../README.md#autonomy-boundary) — "opens,
   never merges" is the guardrail for this routine.
