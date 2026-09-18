@@ -5,9 +5,11 @@ Claude Code skills that power scheduled cloud routines keeping
 reads Danielle's portfolio-linked project repos every week and drafts a short people-friendly
 summary of what changed in each; a second, monthly routine re-reads those same repos' actual
 current state and corrects any Pitch / Stack / "Automation and AI" copy that's quietly gone stale
-since it was written; the third takes a short note from her about a new role, promotion, or
-notable engineering accomplishment and drafts an update to her Experience section. All three open
-a PR (never merge it) against `danibsheehan.github.io` to make the change.
+since it was written; a third takes a short note from her about a new role, promotion, or notable
+engineering accomplishment and drafts an update to her Experience section; a fourth, also monthly,
+re-reads two further infrastructure repos (`dani-foundations`, `dani-actions`) plus this repo's
+own skills and corrects the Systems page wherever it's drifted from what those repos actually do.
+All four open a PR (never merge it) against `danibsheehan.github.io` to make the change.
 
 This repo holds no application code of its own — it exists so these skills have exactly one home
 instead of a duplicated copy inside each project repo they cover (see "Why a separate repo"
@@ -55,6 +57,19 @@ not a single prose paragraph. Scoped to engineering work experience from 2016 on
 Invokable any time she has something to report, or in response to the monthly nudge routine's push
 notification (see "Autonomy boundary" below).
 
+### systems-page-audit
+
+[`.claude/skills/systems-page-audit/SKILL.md`](.claude/skills/systems-page-audit/SKILL.md) runs
+monthly and keeps `danibsheehan.github.io`'s `systems/index.html` ("Systems & Automation" page)
+accurate. That page describes three infrastructure repos, one panel each —
+[`dani-foundations`](https://github.com/danibsheehan/dani-foundations) (a shared Claude Code
+skills toolbox), [`dani-actions`](https://github.com/danibsheehan/dani-actions) (reusable GitHub
+Actions workflows), and this repo itself — and each panel's counts, example-standard bullets, and
+"why it matters" claims can quietly drift as those repos evolve. This skill re-reads each panel
+against its actual source of truth (that repo's README/file counts, or — for its own panel — this
+repo's current skill files) and opens a correction PR only where a specific claim has actually
+gone stale, one PR per panel with drift; a quiet month opens nothing.
+
 ## Autonomy boundary
 
 **In plain English:** these routines may open PRs against `danibsheehan.github.io` on their own.
@@ -68,6 +83,7 @@ manual, per-PR decision, always.
 | `weekly-project-update` | Scheduled cloud routine ("Weekly portfolio update") runs every Monday, cloning this repo plus the four source repos and following the skill step by step | `danibsheehan.github.io`'s `projects/index.html` — only the section belonging to the source repo the update came from | Opens one PR per source repo with signal that week; never merges — a person reviews and merges by hand |
 | `weekly-project-update` (monthly accuracy audit) | A separate scheduled cloud routine ("Monthly portfolio accuracy audit") runs monthly, cloning this repo plus the four source repos and following the same skill's "Monthly accuracy audit" section | `danibsheehan.github.io`'s `projects/index.html` — only the Pitch / Stack / "Automation and AI" copy for a repo where a claim has drifted from that repo's actual current state | Opens a correction PR only where something has actually drifted; a quiet audit opens nothing; never merges — a person reviews and merges by hand |
 | `work-experience-update` | Danielle invokes it herself whenever she has something to report. A separate scheduled routine ("Monthly work-experience nudge") only sends a push notification reminder once a month — it takes no repo action of its own | `danibsheehan.github.io`'s `about/index.html`, `#changelog` section only — never `projects/index.html` | Opens a PR; never merges — a person reviews and merges by hand |
+| `systems-page-audit` | A separate scheduled cloud routine ("Monthly systems-page audit") runs monthly, cloning this repo plus `dani-foundations` and `dani-actions` (all read-only) and following the skill step by step | `danibsheehan.github.io`'s `systems/index.html` — only the panel(s) where a claim has drifted from that panel's actual source of truth | Opens a correction PR only where something has actually drifted, one per panel; a quiet audit opens nothing; never merges — a person reviews and merges by hand |
 
 ## Why a separate repo
 
@@ -76,7 +92,8 @@ to a fifth. That's different from a typical per-repo skill (like `dependabot-tri
 project repo has its own independent copy of, since each instance only ever operates on the repo it
 lives in). A cross-repo orchestrator like this one either needs one canonical home, or N copies that
 must be kept in sync by hand every time the voice guidance or repo list changes. `work-experience-update`
-doesn't read multiple source repos itself, but it shares this home too, so both skills that write to
-`danibsheehan.github.io` live in one canonical place instead of being split across repos. One home
-wins — this repo is that home, referenced (never duplicated) from each source repo's own
-README/AGENTS.md.
+and `systems-page-audit` don't each read as many source repos, but they share this home too, so
+every skill that writes to `danibsheehan.github.io` — including `systems-page-audit`'s two further
+read-only sources, `dani-foundations` and `dani-actions` — lives in one canonical place instead of
+being split across repos. One home wins — this repo is that home, referenced (never duplicated)
+from each source repo's own README/AGENTS.md.
